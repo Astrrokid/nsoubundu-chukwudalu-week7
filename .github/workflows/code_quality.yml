@@ -1,0 +1,47 @@
+name: Code Quality and Build Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # Job 1: Code Quality Check
+  code_quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v5
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  # Job 2: Test and Print Variables
+  print_variables:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Print GitHub Token and Username
+        run: |
+          echo "GitHub Token: ${{ secrets.GITHUB_TOKEN }}"
+          echo "GitHub Username: ${{ env.USERNAME }}"
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+
+  # Job 3: Build
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Build Script
+        run: |
+          echo "Building the project..."
+          echo "Directory tree:"
+          tree .
